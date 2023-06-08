@@ -160,8 +160,7 @@ public class DGExperiment {
 	}
 
 	/** 
-	 * A simple random search algorithm that can be used for single- as well as multi-objective 
-	 * optimization.
+	 * Evolution algorithm.
 	 */
 	public static void algorithm(Function f, 
 			                          int dimension, 
@@ -173,26 +172,7 @@ public class DGExperiment {
 			                          long maxBudget, 
 			                          Random randomGenerator) {
 
-		/* 
-                                        double[] x = new double[dimension];
-		double[] y = new double[numberOfObjectives];
-		double[] z = new double[numberOfConstraints];
-		double range;
-		
-		for (int i = 0; i < maxBudget; i++) {
-			
-		    // Construct x as a random point between the lower and upper bounds 
-			for (int j = 0; j < dimension; j++) {
-				range = upperBounds[j] - lowerBounds[j];
-				x[j] = lowerBounds[j] + randomGenerator.nextDouble() * range;
-			}
-
-		    \* Call the evaluate function to evaluate x on the current problem (this is where all the COCO logging
-		     * is performed) 
-			if (numberOfConstraints > 0)
-				z = f.evaluateConstraint(x);
-			y = f.evaluate(x);
-        */
+		  //TODO
 		}
 	
     public double[] BinaryCrossover(double[] x, double[] y,double cr, Random randomGenerator)
