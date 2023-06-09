@@ -218,8 +218,8 @@ public class DGExperiment {
 				double[] trialVector = BinaryCrossover(targetVector, mutantVector, crossoverRate, randomGenerator);
 
 				// Update the population and history
-				population[i] = Tournament(trialVector, targetVector, f);
-				history.add(population[i]);
+				history.add(trialVector);
+				population[i] = Tournament(targetVector, trialVector, f);
 			}
 
 			t++;
