@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -126,6 +128,9 @@ public class DGExperiment {
 						break;
 
 					/* Call the optimization algorithm for the remaining number of evaluations */
+					int populationSize = 100;
+					double crossoverRate = 0.5;
+					double factor = randomGenerator.nextDouble() * 2.0;
 					algorithm(evaluateFunction,
 							       dimension,
 							       PROBLEM.getNumberOfObjectives(),
@@ -134,7 +139,10 @@ public class DGExperiment {
 							       PROBLEM.getLargestValuesOfInterest(),
 							       PROBLEM.getNumberOfIntegerVariabls(),
 							       evaluationsRemaining,
-							       randomGenerator);
+							       randomGenerator,
+								   populationSize,
+								   factor,
+								   crossoverRate);
 
 					/* Break the loop if the algorithm performed no evaluations or an unexpected thing happened */
 					if (PROBLEM.getEvaluations() == evaluationsDone) {
@@ -163,19 +171,62 @@ public class DGExperiment {
 	 * Evolution algorithm.
 	 */
 	public static void algorithm(Function f, 
-			                          int dimension, 
-			                          int numberOfObjectives,
-                                      int numberOfConstraints,
-			                          double[] lowerBounds,
-			                          double[] upperBounds, 
-                                      int numberOfIntegerVariables,
-			                          long maxBudget, 
-			                          Random randomGenerator) {
+								int dimension, 
+								int numberOfObjectives,
+								int numberOfConstraints,
+								double[] lowerBounds,
+								double[] upperBounds, 
+								int numberOfIntegerVariables,
+								long maxBudget, 
+								Random randomGenerator,
+								int populationSize,
+								double factor,
+								double crossoverRate) {
 
-		  //TODO
+		// Initialize population
+		double[][] population = new double[populationSize][dimension];
+		for (int i = 0; i < populationSize; i++) {
+			population[i] = generateRandomSolution(lowerBounds, upperBounds, numberOfIntegerVariables, randomGenerator);
 		}
+
+		// Initialize history
+		List<double[]> history = new ArrayList<>();
+		history.addAll(Arrays.asList(population));
+
+		// Main loop
+		int t = 0;
+		while (t < maxBudget) {
+
+			// For each individual in the population
+			for (int i = 0; i < populationSize; i++) {
+
+				// Select a random individual as the base vector
+				double[] baseVector = population[randomGenerator.nextInt(populationSize)];
+
+				// Sample two random individuals as the difference vectors
+				double[] differenceVector1 = population[randomGenerator.nextInt(populationSize)];
+				double[] differenceVector2 = population[randomGenerator.nextInt(populationSize)];
+
+				// Generate a mutant vector by adding the scaled difference vectors to the base vector
+				double[] mutantVector = new double[dimension];
+				for (int j = 0; j < dimension; j++) {
+					mutantVector[j] = baseVector[j] + factor * (differenceVector1[j] - differenceVector2[j]);
+				}
+
+				// Perform crossover between the mutant vector and the target vector
+				double[] targetVector = population[i];
+				double[] trialVector = BinaryCrossover(targetVector, mutantVector, crossoverRate, randomGenerator);
+
+				// Update the population and history
+				population[i] = Tournament(trialVector, targetVector, f);
+				history.add(population[i]);
+			}
+
+			t++;
+		}
+	}
 	
-    public double[] BinaryCrossover(double[] x, double[] y,double cr, Random randomGenerator)
+    public static double[] BinaryCrossover(double[] x, double[] y, double cr, Random randomGenerator)
     {
         double[] z = new double[x.length];
         double a = 0;
@@ -192,7 +243,7 @@ public class DGExperiment {
         return z;
     }
     
-    public double[] Tournament(double[] x, double[] y, Function fitness)
+    public static double[] Tournament(double[] x, double[] y, Function fitness)
     {
         // The objective vector that is the result of the evaluation (in single-objective problems only the first vector item is being set). 
         if(fitness.evaluate(x)[0] < fitness.evaluate(y)[0])
@@ -200,5 +251,23 @@ public class DGExperiment {
         else
             return y;
     }
+
+	public static double[] generateRandomSolution(double[] lowerBounds, double[] upperBounds, int numberOfIntegerVariables, Random randomGenerator) {
+
+		int dimension = lowerBounds.length;
+		double[] solution = new double[dimension];
+
+		for (int i = 0; i < dimension; i++) {
+			if (i < numberOfIntegerVariables) {
+				// Generate a random integer value for integer variables
+				solution[i] = randomGenerator.nextInt((int) (upperBounds[i] - lowerBounds[i] + 1)) + lowerBounds[i];
+			} else {
+				// Generate a random real value for real variables
+				solution[i] = lowerBounds[i] + randomGenerator.nextDouble() * (upperBounds[i] - lowerBounds[i]);
+			}
+		}
+
+		return solution;
+	}
 
 }
