@@ -181,7 +181,7 @@ public class ExampleExperiment {
 								 double crossoverRate) {
 
 		// Set dLow and dHigh, values according to literature
-		double dLow = 5 * Math.pow(10, -6);
+		double dLow = 0.25;//5 * Math.pow(10, -6);
 		double dHigh = 0.25;
 		boolean exploit = true; // false means explore
 
@@ -201,7 +201,7 @@ public class ExampleExperiment {
 
 			// Calculate diversity and set mode
 			double diversity = diversity(population, populationSize, dimension, lowerBounds, upperBounds);
-			if (diversity < dLow)
+			if (diversity <= dLow)
 				exploit = false;
 			else if (diversity > dHigh)
 				exploit = true;
@@ -210,18 +210,39 @@ public class ExampleExperiment {
 			for (int i = 0; i < populationSize; i++) {
 
 				// Select a random individual as the base vector
-				double[] baseVector = population[randomGenerator.nextInt(populationSize)];
-				double[] targetVector = population[i];
+				//double[] baseVector = population[randomGenerator.nextInt(populationSize)];
+				//double[] targetVector = population[i];
 
 				if (exploit)
 				{
 					// Selection (above if-else) and recombination with other vector from population
-					double[] recombinedVector = BinaryCrossover(targetVector, baseVector, crossoverRate, randomGenerator);
-					population[i] = recombinedVector; // chyba? albo tournament
+					// Select a random individual as the base vector
+					double[] baseVector = population[randomGenerator.nextInt(populationSize)];
+
+					// Sample two random individuals as the difference vectors
+					//double[] differenceVector1 = population[randomGenerator.nextInt(populationSize)];
+					//double[] differenceVector2 = population[randomGenerator.nextInt(populationSize)];
+
+					// Generate a mutant vector by adding the scaled difference vectors to the base vector
+					//double[] mutantVector = new double[dimension];
+					//for (int j = 0; j < dimension; j++) {
+					//	mutantVector[j] = baseVector[j] + factor * (differenceVector1[j] - differenceVector2[j]);
+					//}
+
+					// Perform crossover between the mutant vector and the target vector
+					double[] targetVector = population[i];
+					double[] trialVector = BinaryCrossover(targetVector, baseVector, crossoverRate, randomGenerator);
+
+					// Update the population and history
+					history.add(trialVector);
+					population[i] = Tournament(targetVector, trialVector, f); // brak tournament powoduje "budget has not been exhausted"
 				}
 				else
 				{
 					// Mutation
+					// Select a random individual as the base vector
+					double[] baseVector = population[randomGenerator.nextInt(populationSize)];
+
 					// Sample two random individuals as the difference vectors
 					double[] differenceVector1 = population[randomGenerator.nextInt(populationSize)];
 					double[] differenceVector2 = population[randomGenerator.nextInt(populationSize)];
@@ -232,9 +253,14 @@ public class ExampleExperiment {
 						mutantVector[j] = baseVector[j] + factor * (differenceVector1[j] - differenceVector2[j]);
 					}
 
+					// Perform crossover between the mutant vector and the target vector
+					//double[] targetVector = population[i];
+					//double[] trialVector = BinaryCrossover(targetVector, mutantVector, crossoverRate, randomGenerator);
+
 					// Update the population and history
+					//history.add(trialVector);
 					history.add(mutantVector);
-					population[i] = Tournament(targetVector, mutantVector, f); // czy po prostu mutant vector?
+					population[i] = mutantVector; //Tournament(targetVector, trialVector, f);
 				}
 			}
 
