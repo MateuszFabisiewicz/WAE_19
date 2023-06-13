@@ -1,13 +1,13 @@
 import java.util.*;
 
-public class ExampleExperiment {
+public class dgea {
 
 	/**
 	 * The maximal budget for evaluations done by an optimization algorithm equals
 	 * dimension * BUDGET_MULTIPLIER.
 	 * Increase the budget multiplier value gradually to see how it affects the runtime.
 	 */
-	public static final int BUDGET_MULTIPLIER = 5;
+	public static final int BUDGET_MULTIPLIER = 3;
 
 	/**
 	 * The maximal number of independent restarts allowed for an algorithm that restarts itself.
@@ -17,7 +17,7 @@ public class ExampleExperiment {
 	/**
 	 * The random seed. Change if needed.
 	 */
-	public static final long RANDOM_SEED = 0xdeadbeef;
+	public static final long RANDOM_SEED = 123;
 
 	/**
 	 * The problem to be optimized (needed in order to simplify the interface between the optimization
@@ -94,9 +94,9 @@ public class ExampleExperiment {
 
 			/* Set some options for the observer. See documentation for other options. */
 			final String observerOptions =
-					"result_folder: RS_on_" + suiteName + " "
-							+ "algorithm_name: RS "
-							+ "algorithm_info: \"A simple random search algorithm\"";
+					"result_folder: dgea_on_" + suiteName + " "
+							+ "algorithm_name: dgea "
+							+ "algorithm_info: \"dgea algorithm\"";
 
 			/* Initialize the suite and observer.
 			 * For more details on how to change the default options, see
@@ -125,7 +125,7 @@ public class ExampleExperiment {
 						break;
 
 					/* Call the optimization algorithm for the remaining number of evaluations */
-					int populationSize = 1000;
+					int populationSize = 500;
 					double crossoverRate = 0.5;
 					double factor = randomGenerator.nextDouble() * 2.0;
 					algorithm(evaluateFunction,

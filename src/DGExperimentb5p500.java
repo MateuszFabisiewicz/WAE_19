@@ -3,14 +3,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class DGExperiment {
+public class DGExperimentb5p500 {
 
     /**
 	 * The maximal budget for evaluations done by an optimization algorithm equals 
 	 * dimension * BUDGET_MULTIPLIER.
 	 * Increase the budget multiplier value gradually to see how it affects the runtime.
 	 */
-	public static final int BUDGET_MULTIPLIER = 3;
+	public static final int BUDGET_MULTIPLIER = 5;
 	
 	/**
 	 * The maximal number of independent restarts allowed for an algorithm that restarts itself. 
@@ -97,7 +97,7 @@ public class DGExperiment {
 
 			/* Set some options for the observer. See documentation for other options. */
 			final String observerOptions = 
-					  "result_folder: DG_on_" + suiteName + " " 
+					  "result_folder: DGb5p500_on_" + suiteName + " " 
 					+ "algorithm_name: DG "
 					+ "algorithm_info: \"DGExperiment\"";
 
