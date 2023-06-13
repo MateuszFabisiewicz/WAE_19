@@ -7,7 +7,7 @@ public class ExampleExperiment {
 	 * dimension * BUDGET_MULTIPLIER.
 	 * Increase the budget multiplier value gradually to see how it affects the runtime.
 	 */
-	public static final int BUDGET_MULTIPLIER = 2;
+	public static final int BUDGET_MULTIPLIER = 5;
 
 	/**
 	 * The maximal number of independent restarts allowed for an algorithm that restarts itself.
@@ -125,7 +125,7 @@ public class ExampleExperiment {
 						break;
 
 					/* Call the optimization algorithm for the remaining number of evaluations */
-					int populationSize = 100;
+					int populationSize = 1000;
 					double crossoverRate = 0.5;
 					double factor = randomGenerator.nextDouble() * 2.0;
 					algorithm(evaluateFunction,
@@ -181,7 +181,7 @@ public class ExampleExperiment {
 								 double crossoverRate) {
 
 		// Set dLow and dHigh, values according to literature
-		double dLow = 0.25;//5 * Math.pow(10, -6);
+		double dLow = 5 * Math.pow(10, -6);
 		double dHigh = 0.25;
 		boolean exploit = true; // false means explore
 
@@ -220,7 +220,7 @@ public class ExampleExperiment {
 					double[] baseVector = population[randomGenerator.nextInt(populationSize)];
 
 					// Sample two random individuals as the difference vectors
-					//double[] differenceVector1 = population[randomGenerator.nextInt(populationSize)];
+					double[] differenceVector1 = population[randomGenerator.nextInt(populationSize)];
 					//double[] differenceVector2 = population[randomGenerator.nextInt(populationSize)];
 
 					// Generate a mutant vector by adding the scaled difference vectors to the base vector
@@ -231,10 +231,16 @@ public class ExampleExperiment {
 
 					// Perform crossover between the mutant vector and the target vector
 					double[] targetVector = population[i];
-					double[] trialVector = BinaryCrossover(targetVector, baseVector, crossoverRate, randomGenerator);
+					double[] trialVector = BinaryCrossover(differenceVector1, baseVector, crossoverRate, randomGenerator);
 
 					// Update the population and history
 					history.add(trialVector);
+					if (numberOfConstraints>0)
+					{
+						f.evaluateConstraint(targetVector);
+						f.evaluateConstraint(trialVector);
+
+					}
 					population[i] = Tournament(targetVector, trialVector, f); // brak tournament powoduje "budget has not been exhausted"
 				}
 				else
@@ -254,13 +260,17 @@ public class ExampleExperiment {
 					}
 
 					// Perform crossover between the mutant vector and the target vector
-					//double[] targetVector = population[i];
+					double[] targetVector = population[i];
 					//double[] trialVector = BinaryCrossover(targetVector, mutantVector, crossoverRate, randomGenerator);
 
 					// Update the population and history
 					//history.add(trialVector);
 					history.add(mutantVector);
-					population[i] = mutantVector; //Tournament(targetVector, trialVector, f);
+					if(numberOfConstraints>0)
+					{
+						f.evaluateConstraint(mutantVector);
+					}
+					population[i] = mutantVector; //Tournament(targetVector, mutantVector, f); // lub bez Tournament?
 				}
 			}
 
