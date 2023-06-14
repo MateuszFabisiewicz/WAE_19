@@ -732,6 +732,12 @@ def build_java():
     run('code-experiments/build/java', ['javac', '-classpath', '.', 'dgeab3p5000.java'], verbose=_verbosity)
     run('code-experiments/build/java', ['javac', '-classpath', '.', 'dgeab5p5000.java'], verbose=_verbosity)
     run('code-experiments/build/java', ['javac', '-classpath', '.', 'dgeab8p5000.java'], verbose=_verbosity)
+    run('code-experiments/build/java', ['javac', '-classpath', '.', 'dgeaCross3.java'], verbose=_verbosity)
+    run('code-experiments/build/java', ['javac', '-classpath', '.', 'dgeaCross7.java'], verbose=_verbosity)
+    run('code-experiments/build/java', ['javac', '-classpath', '.', 'dgeaCross9.java'], verbose=_verbosity)
+    run('code-experiments/build/java', ['javac', '-classpath', '.', 'DGExperimentCross3.java'], verbose=_verbosity)
+    run('code-experiments/build/java', ['javac', '-classpath', '.', 'DGExperimentCross7.java'], verbose=_verbosity)
+    run('code-experiments/build/java', ['javac', '-classpath', '.', 'DGExperimentCross9.java'], verbose=_verbosity)
 
 
 def run_java():
@@ -739,10 +745,76 @@ def run_java():
     build_java()
     try:
         run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentCross3'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentCross7'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentCross9'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
             ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperiment'],
             verbose=_verbosity)
         run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentb5p500'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentb5p5000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentb5p1000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentb3p1000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentb3p5000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentb8p500'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentb8p5000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'DGExperimentb8p1000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeaCross3'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeaCross7'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeaCross9'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
             ['java', '-classpath', '.', '-Djava.library.path=.', 'dgea'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeab5p500'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeab5p5000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeab5p1000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeab3p1000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeab3p5000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeab8p500'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeab8p5000'],
+            verbose=_verbosity)
+        run('code-experiments/build/java',
+            ['java', '-classpath', '.', '-Djava.library.path=.', 'dgeab8p1000'],
             verbose=_verbosity)
     except subprocess.CalledProcessError:
         sys.exit(-1)
